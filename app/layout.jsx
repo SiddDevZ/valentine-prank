@@ -15,7 +15,7 @@ const josefin = Josefin_Sans({
 
 export const metadata = {
   title: "Be My Valentine?",
-  description: "Please say yes... 🥺👉👈",
+  // description: "Please say yes... 🥺👉👈",
 };
 
 export default function RootLayout({ children }) {
