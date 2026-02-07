@@ -1,5 +1,6 @@
 import { Inter, Josefin_Sans } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next"
 
 const inter = Inter({
   variable: "--font-inter",
@@ -25,6 +26,7 @@ export default function RootLayout({ children }) {
         className={`${inter.variable} ${josefin.variable} antialiased selection:bg-pink-200 selection:text-pink-900`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );

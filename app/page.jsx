@@ -176,6 +176,7 @@ export default function Home() {
 
   return (
     <div className="flex items-center justify-center relative min-h-screen overflow-hidden bg-pink-50 selection:bg-pink-200 selection:text-pink-900">
+      <video src="/prank_vid.mp4" preload="auto" className="hidden" muted />
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-[radial-gradient(at_0%_0%,rgba(249,168,212,0.3)_0px,transparent_50%),radial-gradient(at_100%_0%,rgba(244,114,182,0.3)_0px,transparent_50%),radial-gradient(at_100%_100%,rgba(236,72,153,0.3)_0px,transparent_50%),radial-gradient(at_0%_100%,rgba(219,39,119,0.3)_0px,transparent_50%)]" />
       </div>
@@ -309,12 +310,14 @@ export default function Home() {
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ type: "spring", damping: 14 }}
-                className="w-22 h-24 rounded-2xl overflow-hidden"
+                className="w-32 h-22 rounded-md overflow-hidden shadow-lg "
               >
-                <img 
-                  src="https://media1.tenor.com/m/zEKqJca8VUMAAAAd/muscle-black-man.gif" 
-                  alt="oil up" 
+                <video 
+                  src="/prank_vid.mp4" 
                   className="w-full h-full object-cover"
+                  autoPlay
+                  loop
+                  playsInline
                 />
               </motion.div>
 
@@ -375,6 +378,7 @@ export default function Home() {
                 className="text-xs text-slate-400 cursor-pointer hover:text-slate-600 transition-colors"
               >
                 (its a joke, everything happens on client side)
+                <br />nothing is saved or tracked
               </motion.button>
             </div>
           </motion.main>
