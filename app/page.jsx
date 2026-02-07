@@ -372,9 +372,9 @@ export default function Home() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1 }}
                 onClick={resetGame}
-                className="text-xs text-slate-400 cursor-pointer hover:text-slate-600 underline underline-offset-4 transition-colors"
+                className="text-xs text-slate-400 cursor-pointer hover:text-slate-600 transition-colors"
               >
-                Just kidding, try again
+                (its a joke, everything happens on client side)
               </motion.button>
             </div>
           </motion.main>
