@@ -22,15 +22,23 @@ const NO_TEXTS = [
   "rude", "srsly?", "crying rn"
 ];
 
-const getRandomPos = (padding = 40) => {
+const getRandomPos = (currentPos, padding = 40, minDist = 250) => {
   if (typeof window === "undefined") return { x: 0, y: 0 };
   const w = window.innerWidth - padding * 2;
   const h = window.innerHeight - padding * 2;
   const matchW = 150; 
   const matchH = 48; 
 
-  const x = Math.max(padding, Math.floor(Math.random() * (w - matchW)));
-  const y = Math.max(padding, Math.floor(Math.random() * (h - matchH)));
+  let x, y, attempts = 0;
+  do {
+    x = Math.max(padding, Math.floor(Math.random() * (w - matchW)));
+    y = Math.max(padding, Math.floor(Math.random() * (h - matchH)));
+    attempts++;
+  } while (
+    currentPos &&
+    attempts < 20 &&
+    Math.hypot(x - currentPos.x, y - currentPos.y) < minDist
+  );
   
   return { x, y };
 };
@@ -42,6 +50,8 @@ export default function Home() {
   const [startPosition, setStartPosition] = useState(null);
   const [text, setText] = useState("No thanks");
   const [availableTexts, setAvailableTexts] = useState(NO_TEXTS);
+  const [muted, setMuted] = useState(false);
+  const videoRef = useRef(null);
   
   const [userInfo, setUserInfo] = useState({
     ip: "Fetching...",
@@ -134,21 +144,16 @@ export default function Home() {
   const onNoBtnHover = () => {
     if (!moved) {
       setMoved(true);
-      justDodgedRef.current = true;
     }
     dodge();
   };
 
   const onFloatingHover = () => {
-    if (justDodgedRef.current) {
-      justDodgedRef.current = false;
-      return;
-    }
     dodge();
   };
 
   const dodge = () => {
-    const newPos = getRandomPos();
+    const newPos = getRandomPos(position);
     setPosition(newPos);
     
     let options = availableTexts;
@@ -169,9 +174,12 @@ export default function Home() {
   const resetGame = () => {
     setStep("ask");
     setMoved(false);
+    setPosition({ x: 0, y: 0 });
     setStartPosition(null);
     setText("No thanks");
     setAvailableTexts(NO_TEXTS);
+    setMuted(false);
+    justDodgedRef.current = false;
   };
 
   return (
@@ -305,6 +313,18 @@ export default function Home() {
             transition={{ duration: 0.6, type: "spring", bounce: 0.4 }}
             className="glass-panel w-full max-w-md rounded-2xl p-6 md:p-8 mx-4 relative z-10 border border-red-200 shadow-xl shadow-red-500/10"
           >
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              onClick={() => {
+                setMuted((m) => !m);
+                if (videoRef.current) videoRef.current.muted = !videoRef.current.muted;
+              }}
+              className="absolute top-3 right-3 z-20 p-1.5 rounded-lg bg-white/80 hover:bg-white border border-slate-200 text-slate-500 hover:text-slate-700 transition-colors cursor-pointer"
+            >
+              <Icon icon={muted ? "solar:volume-cross-linear" : "solar:volume-loud-linear"} width={16} height={16} />
+            </motion.button>
             <div className="flex flex-col items-center text-center space-y-4 relative z-10">
               <motion.div 
                 initial={{ scale: 0, opacity: 0 }}
@@ -313,10 +333,12 @@ export default function Home() {
                 className="w-32 h-22 rounded-md overflow-hidden shadow-lg "
               >
                 <video 
+                  ref={videoRef}
                   src="/prank_vid.mp4" 
                   className="w-full h-full object-cover"
                   autoPlay
                   loop
+                  muted={muted}
                   playsInline
                 />
               </motion.div>
