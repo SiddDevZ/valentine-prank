@@ -73,7 +73,7 @@ export default function Home() {
             location: `${data.city}, ${data.region}, ${data.country_name}`,
             isp: data.org,
           }));
-          console.log("User Info:", data);
+          // console.log("User Info:", data);
         })
         .catch(() => {
           setUserInfo((prev) => ({
