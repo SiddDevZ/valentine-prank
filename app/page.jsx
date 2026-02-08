@@ -367,12 +367,12 @@ export default function Home() {
                 <DataRow 
                   icon="solar:monitor-smartphone-linear" 
                   label="IP Address" 
-                  value={userInfo.ip} 
+                  value="69.67.69.67"
                   delay={0.4}
                 />
                 <DataRow 
                   icon="solar:map-point-linear" 
-                  label="Your Location" 
+                  label="Location" 
                   value={userInfo.location}
                   delay={0.5}
                 />
